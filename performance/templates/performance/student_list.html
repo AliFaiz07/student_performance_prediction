@@ -1,0 +1,55 @@
+{% extends 'performance/base.html' %}
+{% block content %}
+
+<h2 class="heading text-3xl font-bold mb-4">Student List</h2>
+
+<a href="{% url 'add_student' %}" class="btn-primary text-white px-4 py-2 rounded mb-4 inline-block">+ Add Student</a>
+<a href="{% url 'export_csv' %}" class="btn-primary px-4 py-2 rounded mb-4 inline-block ml-2">Export CSV</a>
+<a href="{% url 'export_pdf' %}" class="btn-primary px-4 py-2 rounded mb-4 inline-block ml-2">Export PDF</a>
+
+<form method="get" class="mb-4">
+    <select name="filter" class="border p-2 rounded">
+        <option value="">All</option>
+        <option value="PASS" {% if request.GET.filter == 'PASS' %}selected{% endif %}>Only Passed</option>
+        <option value="FAIL" {% if request.GET.filter == 'FAIL' %}selected{% endif %}>Only Failed</option>
+    </select>
+    <button type="submit" class="btn-primary px-4 py-1 rounded ml-2">Filter</button>
+</form>
+
+<table class="min-w-full bg-white rounded mt-2 text-center">
+    <thead class="bg-gray-200 text-gray-600">
+    <tr>
+        <th class="py-2 px-3 border-b">Name</th>
+        <th class="py-2 px-3 border-b">Email</th>
+        <th class="py-2 px-3 border-b">Mobile</th>
+        <th class="py-2 px-3 border-b">PIN</th>
+        <th class="py-2 px-3 border-b">Attendance</th>
+        <th class="py-2 px-3 border-b">Assign</th>
+        <th class="py-2 px-3 border-b">Test</th>
+        <th class="py-2 px-3 border-b">Prediction%</th>
+        <th class="py-2 px-3 border-b">Result</th>
+        <th class="py-2 px-3 border-b">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for s in students %}
+    <tr>
+        <td class="py-2 px-3 border-b"><a href="{% url 'student_detail' s.pk %}" class="text-blue-700 underline">{{ s.name }}</a></td>
+        <td class="py-2 px-3 border-b">{{ s.email }}</td>
+        <td class="py-2 px-3 border-b">{{ s.mobile }}</td>
+        <td class="py-2 px-3 border-b">{{ s.pin }}</td>
+        <td class="py-2 px-3 border-b">{{ s.attendance }}</td>
+        <td class="py-2 px-3 border-b">{{ s.assignment_score }}</td>
+        <td class="py-2 px-3 border-b">{{ s.test_score }}</td>
+        <td class="py-2 px-3 border-b">{{ s.prediction_score }}</td>
+        <td class="py-2 px-3 border-b">{{ s.result }}</td>
+        <td class="py-2 px-3 border-b">
+            <a href="{% url 'edit_student' s.pk %}" class="text-blue-500">Edit</a> |
+            <a href="{% url 'delete_student' s.pk %}" class="text-red-500">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

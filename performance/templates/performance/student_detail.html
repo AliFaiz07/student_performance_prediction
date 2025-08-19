@@ -1,0 +1,91 @@
+{% extends 'performance/base.html' %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-3">{{ student.name }}</h1>
+
+<!-- Badge -->
+<div class="inline-block mb-4 px-4 py-2 rounded-lg text-white
+     {% if student.result == 'PASS' %} bg-green-600 {% else %} bg-red-600 {% endif %}">
+    Performance: {{ student.prediction_score }}% ({{ student.result }})
+</div>
+
+<!-- Section: Scores Table -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Score Breakdown</div>
+<table class="table-auto border mb-6 bg-white shadow w-full md:w-1/2">
+    <tr><th class="px-4 py-2 border">Attendance</th><td class="px-4 py-2">{{ student.attendance }}</td></tr>
+    <tr><th class="px-4 py-2 border">Assignment</th><td class="px-4 py-2">{{ student.assignment_score }}</td></tr>
+    <tr><th class="px-4 py-2 border">Test Score</th><td class="px-4 py-2">{{ student.test_score }}</td></tr>
+    <tr><th class="px-4 py-2 border">Prediction %</th><td class="px-4 py-2">{{ student.prediction_score }}</td></tr>
+    <tr><th class="px-4 py-2 border">Result</th><td class="px-4 py-2">{{ student.result }}</td></tr>
+</table>
+
+<!-- Progress Bars -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Progress Bars</div>
+<div class="space-y-2 mb-8">
+  <div><strong>Attendance:</strong> {{ student.attendance }}%
+    <div class="w-full bg-gray-200 h-3 rounded"><div class="h-3 rounded bg-blue-500" style="width: {{ student.attendance }}%"></div></div>
+  </div>
+  <div><strong>Assignment:</strong> {{ student.assignment_score }}%
+    <div class="w-full bg-gray-200 h-3 rounded"><div class="h-3 rounded bg-green-500" style="width: {{ student.assignment_score }}%"></div></div>
+  </div>
+  <div><strong>Test Score:</strong> {{ student.test_score }}%
+    <div class="w-full bg-gray-200 h-3 rounded"><div class="h-3 rounded bg-yellow-500" style="width: {{ student.test_score }}%"></div></div>
+  </div>
+</div>
+
+<!-- Gauge Chart -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Prediction Gauge</div>
+<canvas id="gaugeChart" class="mb-8 h-40 w-40 mx-auto"></canvas>
+
+<!-- Line Chart -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Line Chart</div>
+<canvas id="lineChart" class="mb-8 h-40 w-64 mx-auto"></canvas>
+
+<!-- Radar Chart -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Radar Chart</div>
+<canvas id="radarChart" class="mb-8 h-40 w-64 mx-auto"></canvas>
+
+<!-- Donut -->
+<div class="bg-blue-200 px-3 py-1 font-semibold rounded mb-2">Pass vs Fail</div>
+<canvas id="donutChart" class="mb-8 h-40 w-64 mx-auto"></canvas>
+
+<!-- Suggestions -->
+<div class="bg-yellow-100 px-4 py-3 rounded-lg shadow-md">
+    <h3 class="font-semibold mb-1">Suggestions:</h3>
+    <ul class="list-disc ml-5 text-sm">
+        {% for tip in suggestions %}
+            <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<a href="{% url 'student_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded mt-4 inline-block">Back to List</a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const labels = {{ labels|safe }};
+  const scores = {{ scores|safe }};
+  const passVal = {{ pass_val|floatformat:"2" }};
+  const failVal = {{ fail_val|floatformat:"2" }};
+
+  new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: { labels: labels, datasets:[{ label:'Scores Trend', data: scores }] }
+  });
+
+  new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: { labels: labels, datasets:[{ label:'Radar Performance', data: scores }] }
+  });
+
+  new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: { labels: ['Pass', 'Fail'], datasets:[{ data:[passVal, failVal] }] }
+  });
+
+  new Chart(document.getElementById('gaugeChart'), {
+    type: 'doughnut',
+    data: { labels:['Pass','Remaining'], datasets:[{ data:[passVal, 100-passVal] }] },
+    options: { circumference: 180, rotation: -90 }
+  });
+</script>
+{% endblock %}

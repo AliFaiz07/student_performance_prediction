@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Student System{% endblock %}</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        .heading { color: #002c5f; }
+        .btn-primary { background-color: #005eb8; color: white; }
+        .btn-primary:hover { background-color: #002c5f; }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow mb-4 px-6 py-3 flex justify-between items-center">
+        <h1 class="heading text-xl font-bold">Student System</h1>
+        <div class="space-x-4">
+            <a href="{% url 'home' %}" class="text-blue-700 font-medium">Home</a>
+            <a href="{% url 'student_list' %}" class="text-blue-700 font-medium">Students</a>
+            <a href="{% url 'add_student' %}" class="text-blue-700 font-medium">Add Student</a>
+            <a href="{% url 'student_login' %}" class="text-blue-700 font-medium">Student Login</a>
+            <a href="{% url 'student_register' %}" class="text-blue-700 font-medium">Student Register</a>
+
+            {% if user.is_authenticated %}
+              <a href="{% url 'logout' %}" class="text-red-600 font-semibold">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="p-4">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

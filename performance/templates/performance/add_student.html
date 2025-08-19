@@ -1,0 +1,10 @@
+{% extends 'performance/base.html' %}
+{% block content %}
+<h2 class="heading text-2xl font-bold mb-4">Add Student</h2>
+
+<form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-primary px-4 py-2 rounded">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'performance/base.html' %}
+{% block content %}
+
+<h2 class="heading text-3xl font-bold mb-6">Teacher Dashboard Overview</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white p-6 rounded-xl shadow-md border">
+        <p class="text-gray-600">Total Students</p>
+        <p class="text-2xl font-semibold text-blue-900">{{ total_students }}</p>
+    </div>
+    <div class="bg-green-100 p-6 rounded-xl shadow-md border">
+        <p class="text-gray-600">Passed</p>
+        <p class="text-2xl font-semibold text-green-700">{{ pass_count }} ({{ pass_percent }}%)</p>
+    </div>
+    <div class="bg-red-100 p-6 rounded-xl shadow-md border">
+        <p class="text-gray-600">Failed</p>
+        <p class="text-2xl font-semibold text-red-700">{{ fail_count }} ({{ fail_percent }}%)</p>
+    </div>
+</div>
+
+<div class="mt-6 space-x-3">
+    <a href="{% url 'student_list' %}" class="btn-primary px-4 py-2 rounded">View Students</a>
+    <a href="{% url 'add_student' %}" class="btn-primary px-4 py-2 rounded">Add Student</a>
+</div>
+
+<div class="mt-6">
+    <a href="{% url 'student_login' %}" class="text-blue-700 underline">Student Login</a> |
+    <a href="{% url 'student_register' %}" class="text-blue-700 underline">Student Register</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'performance/base.html' %}
+{% block content %}
+<h2 class="heading text-xl font-bold mb-4">Are you sure you want to delete {{ student.name }}?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-primary px-4 py-2 rounded bg-red-600 hover:bg-red-800">Yes Delete</button>
+    <a href="{% url 'student_list' %}" class="text-blue-700 underline ml-4">Cancel</a>
+</form>
+{% endblock %}
