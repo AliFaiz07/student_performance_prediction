@@ -1,0 +1,7 @@
+Django==5.2.4
+mysqlclient
+numpy
+scikit-learn
+pandas
+matplotlib
+reportlab
